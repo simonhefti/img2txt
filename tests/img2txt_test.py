@@ -16,17 +16,30 @@ class Img2TxtTest(unittest.TestCase):
 
     def test_png1(self):
 
-        print("Hello")
-
         with PIL.Image.open("tests/t1.png") as pil_img:
             txt = img2txt.img2txt(pil_img)
-            print(f"DBG txt: {txt}")
             self.assertTrue(len(txt) > 0)
+
+            print(f"DBG t1.png: {txt}")
 
             self.assertTrue("Zuckerberg stellte am Mittwoch neue" in txt)
             self.assertTrue("KI-Software vor. Zudem lancierte der" in txt)
             self.assertTrue("Meta-Chef auch eine neue VR-Brille" in txt)
-            self.assertTrue("Der Chatbot Chat GPT trat ein Wettruesten der" in txt)
+            self.assertTrue("Der Chatbot Chat GPT trat ein Wettrüsten der" in txt)
+
+    def test_png2(self):
+
+        with PIL.Image.open("tests/t2.png") as pil_img:
+            txt = img2txt.img2txt(pil_img)
+            print(f"DBG t2.png: {txt}")
+            self.assertTrue(len(txt) > 0)
+
+    def test_png3(self):
+
+        with PIL.Image.open("tests/t3.png") as pil_img:
+            txt = img2txt.img2txt(pil_img)
+            print(f"DBG t3.png: {txt}")
+            self.assertTrue(len(txt) > 0)
 
 if __name__ == "__main__":
     unittest.main()
