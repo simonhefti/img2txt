@@ -66,10 +66,10 @@ def is_better(wgwa1, wbwa1, wgwa2, wbwa2):
 
 def img2txt(pil_img, wb_wa_th=0.1):
 
-    wa, wb, wg, txt = rotate_and_text_features(pil_img, "eng", 0)
-    wgwa, wbwa, f1 = word_ratios(wa, wb, wg)
+    txt = pytesseract.image_to_string(pil_img, lang="eng")
+    wab = tf.word_analysis(txt) # best we know so far
 
-    if len(wa) < 1:
+    if len(wab.words) < 1:
          # no words detected
          print(f"WAR no words detected")
          return ""
@@ -79,35 +79,26 @@ def img2txt(pil_img, wb_wa_th=0.1):
     print(f"DBG t_lang {t_lang}")
 
     if "eng" != t_lang:
+        tx2 = pytesseract.image_to_string(pil_img, lang=t_lang)
+        wa2 = tf.word_analysis(tx2)
 
-        wa1 = wa, wg1 = wg, wb1 = wb, wgwa1 = wgwa, wbwa1 = wbwa
-        wa, wb, wg, txt = rotate_and_text_features(pil_img, t_lang, 0)
-        wgwa, wbwa, f1 = word_ratios(wa, wb, wg)
-
-        if is_better(wgwa1, wbwa1, wgwa, wbwa):
-            print(f"DBG improved with language")
+        if wa2.is_better(wab):
+            # adopt proposed language
+            txt = tx2
+            wab = wa2
         else:
-            wa = wa1, wb = wb1, wg = wg1, 
+            t_lang = "eng" # stay with default
 
+    # try rotations
+    for angle in [270, 90, 180]:
+        img = pil_img.rotate(angle, PIL.Image.NEAREST, expand = 1)
+        tx3 = pytesseract.image_to_string(img, lang=t_lang)
+        wa3 = tf.word_analysis(tx3)
 
-        
-
-
-    # print(f"wa {','.join(wa)}")
-    # print(f"wb {','.join(wb)}")
-    # print(f"wg {','.join(wb)}")
-
-    # if len(wb) / float(len(wa)) < wb_wa_th:
-    #      # no further processing required
-    #      print(f"DBG first threshold ({wb_wa_th}) met")
-    #      return txt
-    
-    # attempt rotation
-    for angle in [90, 180, 270]:
-        wa2, wb2, wg2, txt = rotate_and_text_features(pil_img, t_lang, angle)
-        wgwa, wbwa, f1 = word_ratios(wa2, wb2, wg2)
-        if len(wb2) < len(wb) and len(wg2) > len(wg):
-            print(f"DBG improved with rotation {angle}: {len(wb2)} vs {len(wb)}")
-            return txt
+        if wa3.is_better(wab):
+            print(f"improved with angle {angle}")
+            # adopt angle
+            txt = tx3
+            wab = wa3
         
     return txt
