@@ -1,13 +1,13 @@
 from setuptools import setup
 
 setup(
-    name='img2txtocr',
+    name='img2txt',
     version='0.1.0',    
     description='Extract text from PDF and images',
     author='Simon Hefti',
     author_email='simon.hefti@d-one.ai',    
     license='MIT',
-    packages=['img2txtocr'],
+    packages=['img2txt'],
     install_requires=['pytesseract',
                       'pillow',
                       'lingua-language-detector',
