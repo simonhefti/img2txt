@@ -38,25 +38,6 @@ def rotate_and_text_features(pil_img, lang, angle):
 
     return wa, wb, wg, txt
 
-# def word_ratios(wa, wb, wg):
-
-#     print(f"wa {','.join(wa)}")
-#     print(f"wb {','.join(wb)}")
-#     print(f"wg {','.join(wg)}")
-
-#     if len(wa) < 1:
-#         wgwa = 0
-#         wbwa = 1
-#     else:
-#         wgwa = len(wg) / float(len(wa))
-#         wbwa = len(wb) / float(len(wa))
-
-#     f1 = wgwa * wbwa
-
-#     print(f"DBG   wgwa {wgwa:.2f} wbwa {wbwa:.2f} f1 {f1:.2f}")
-
-#     return wgwa, wbwa, f1
-
 def is_better(wgwa1, wbwa1, wgwa2, wbwa2):
 
     res = False
@@ -64,19 +45,19 @@ def is_better(wgwa1, wbwa1, wgwa2, wbwa2):
         res = True
     return res
 
-def img2txt(pil_img, wb_wa_th=0.1):
+def img2txt(pil_img):
 
     txt = pytesseract.image_to_string(pil_img, lang="eng")
     wab = tf.word_analysis(txt) # best we know so far
 
     if len(wab.words) < 1:
          # no words detected
-         print(f"WAR no words detected")
+         # print(f"WAR no words detected")
          return ""
 
     language = lang_dect.detect_language_of(txt)
     t_lang = to_tesseract_language_code(language)
-    print(f"DBG t_lang {t_lang}")
+    # print(f"DBG t_lang {t_lang}")
 
     if "eng" != t_lang:
         tx2 = pytesseract.image_to_string(pil_img, lang=t_lang)
@@ -96,7 +77,7 @@ def img2txt(pil_img, wb_wa_th=0.1):
         wa3 = tf.word_analysis(tx3)
 
         if wa3.is_better(wab):
-            print(f"improved with angle {angle}")
+            # print(f"improved with angle {angle}")
             # adopt angle
             txt = tx3
             wab = wa3

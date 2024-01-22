@@ -40,16 +40,18 @@ class word_analysis():
         res = False
 
         if len(self.words) > 1 and len(other.words) > 1:
-            print(f"DBG self and other have words")
+            # print(f"DBG self and other have words")
             if self.ratio_good > other.ratio_good:
-                print(f"DBG self ratio_good is higher")
+                # print(f"DBG self ratio_good is higher")
                 if self.ratio_bad <= other.ratio_bad:
-                    print(f"DBG self ratio_bad is lower")
+                    # print(f"DBG self ratio_bad is lower")
                     res = True
             else:
-                print(f"DBG self ratio_good is worse: {self}")
+                # print(f"DBG self ratio_good is worse: {self}")
+                pass
         else:
-            print(f"DBG not enough words")
+            # print(f"DBG not enough words")
+            pass
 
 
         return res
@@ -100,53 +102,3 @@ class word_analysis():
         res = fold_to_ascii.fold(res)
 
         return res
-
-# def tf(txt):
-
-#     if txt is None or len(txt) < 1:
-#         return [], []
-    
-#     words = [w for w in re.findall(r"\b\w*\b", txt) if len(w) > 0]
-#     wwreps = [w for w in words if re.match(r"\w*(\w)\1{2,}\w*", w)]
-#     wwnums = [w for w in words if re.match(r"[a-zA-Z]+\d+[a-zA-Z]+", w)]
-#     wgood  = good_words(words)
-
-#     w1 = list(set(words))
-#     w2 = list(set(wwreps + wwnums))
-#     w3 = list(set(wgood))
-
-#     # txt = ascii_fold(txt)
-#     # txt = fold_to_ascii.fold(txt)
-#     # txt = ftfy.fix_text(txt)
-
-#     # words = get_words(txt)
-
-#     # wg = good_words(words)
-
-#     # return words, wg, txt
-#     return w1, w2, w3
-
-# def tf1(txt):
-
-#     if txt is None or len(txt) < 1:
-#         return [], []
-    
-#     words = [w for w in re.findall(r"\b\w*\b", txt) if len(w) > 0]
-#     wwreps = [w for w in words if re.match(r"\w*(\w)\1{2,}\w*", w)]
-#     wwnums = [w for w in words if re.match(r"[a-zA-Z]+\d+[a-zA-Z]+", w)]
-#     wgood  = good_words(words)
-
-#     w1 = list(set(words))
-#     w2 = list(set(wwreps + wwnums))
-#     w3 = list(set(wgood))
-
-#     # txt = ascii_fold(txt)
-#     # txt = fold_to_ascii.fold(txt)
-#     # txt = ftfy.fix_text(txt)
-
-#     # words = get_words(txt)
-
-#     # wg = good_words(words)
-
-#     # return words, wg, txt
-#     return w1, w2, w3
